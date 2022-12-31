@@ -55,13 +55,13 @@
 - name: Set directory permissions
   ansible.builtin.shell:
     chdir: "{{ nextcloud_dir }}"
-    cmd: find . -type d -exec chmod 750 {} {{ nextcloud_dir }};
+    cmd: find {{ nextcloud_dir }} -type d -exec chmod 750 {} \;
   become: true
 
 - name: Set file permissions
   ansible.builtin.shell:
     chdir: "{{ nextcloud_dir }}"
-    cmd: find . -type f -exec chmod 640 {} {{ nextcloud_dir }};
+    cmd: find {{ nextcloud_dir }} -type f -exec chmod 640 {} \;
   become: true
 
 - name: Start service apache2
