@@ -1,6 +1,4 @@
 ---
-# - name: include vars
-#   include_vars: "{{ playbook_dir }}/roles/vars/main.yml"
 
 - name: Stop service apache2
   ansible.builtin.service:
@@ -26,15 +24,15 @@
     state: absent
   become: true
 
-- name: Download latest Nextcloud Release and put it in /opt/
+- name: Download latest Nextcloud Release and put it in /tmp/
   get_url:
     url: https://download.nextcloud.com/server/releases/latest.zip
-    dest: /opt/
+    dest: /tmp/
   become: true
 
 - name: Unarchive the zip file to the nextcloud directory
   unarchive:
-    src: /opt/latest.zip
+    src: /tmp/latest.zip
     dest: /var/www/html/
     remote_src: true
   become: true
@@ -57,13 +55,13 @@
 - name: Set directory permissions
   ansible.builtin.shell:
     chdir: "{{ nextcloud_dir }}"
-    cmd: find . -type d -exec chmod 750 {} \
+    cmd: find . -type d -exec chmod 750 {} {{ nextcloud_dir }};
   become: true
 
 - name: Set file permissions
   ansible.builtin.shell:
     chdir: "{{ nextcloud_dir }}"
-    cmd: find . -type f -exec chmod 640 {} \;
+    cmd: find . -type f -exec chmod 640 {} {{ nextcloud_dir }};
   become: true
 
 - name: Start service apache2
@@ -82,5 +80,11 @@
 - name: Clean up old nextcloud directory
   file:
     path: "{{ nextcloud_backup_dir }}"
+    state: absent
+  become: true
+
+- name: Clean up nextcloud zip
+  file:
+    path: /tmp/latest.zip
     state: absent
   become: true
