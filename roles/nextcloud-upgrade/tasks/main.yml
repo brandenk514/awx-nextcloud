@@ -1,6 +1,6 @@
 ---
-- name: include vars
-  include_vars: "{{ playbook_dir }}/roles/vars/main.yml"
+# - name: include vars
+#   include_vars: "{{ playbook_dir }}/roles/vars/main.yml"
 
 - name: Stop service apache2
   ansible.builtin.service:
