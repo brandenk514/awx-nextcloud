@@ -72,7 +72,6 @@
 
 - name: Upgrade Nextcloud
   ansible.builtin.shell:
-    become: true
     chdir: "{{ nextcloud_dir }}"
     cmd: sudo -u www-data php occ upgrade
   become: true
