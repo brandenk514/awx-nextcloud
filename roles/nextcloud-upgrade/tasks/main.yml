@@ -76,12 +76,6 @@
     cmd: sudo -u www-data php occ upgrade
   become: true
 
-- name: Clean up old nextcloud directory
-  file:
-    path: "{{ nextcloud_backup_dir }}"
-    state: absent
-  become: true
-
 - name: Clean up nextcloud zip
   file:
     path: /tmp/latest.zip
